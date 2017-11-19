@@ -33,24 +33,42 @@ class WeatherBox extends React.Component {
 
     this.state = {
       data: weatherData.data,
+      activeIndex: 0,
     };
+
+    this.handleThumbnailClick = this.handleThumbnailClick.bind(this);
+  }
+
+  handleThumbnailClick(index) {
+    this.setState({activeIndex: index})
   }
 
   makeThumbnails() {
     var thumbnails = [];
     for(var i = 0; i < this.state.data.length; i++) {
-      thumbnails.push(<WeatherThumbnail date={this.state.data[i].date} temp={this.state.data[i].temp} key={i}/>)
+      thumbnails.push(
+        <WeatherThumbnail
+          index={i}
+          handleClick={this.handleThumbnailClick}
+          date={this.state.data[i].date}
+          temp={this.state.data[i].temp}
+          key={i}
+        />
+      )
     }
     return <div className="weather-thumbnails">{thumbnails}</div>;
   }
 
   render() {
-    console.log(this.state);
+    const {
+      data,
+      activeIndex
+    } = this.state;
     return (
       <div>
         <h2>Weather</h2>
         <nav>navigation?</nav>
-        <WeatherFeature date={this.state.data[0].date} temp={this.state.data[0].temp}/>
+        <WeatherFeature date={data[activeIndex].date} temp={data[activeIndex].temp}/>
         {this.makeThumbnails()}
       </div>
     );
@@ -70,15 +88,31 @@ class WeatherFeature extends React.Component {
 }
 
 class WeatherThumbnail extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.click = this.click.bind(this);
+  }
+
+  click() {
+    this.props.handleClick(this.props.index);
+  }
+
   render() {
     return (
-      <div className="weather-thumbnail">
+      <div className="weather-thumbnail" onClick={this.click}>
         <h4>{this.props.date}</h4>
         <h2>{this.props.temp}°</h2>
       </div>
     );
   }
 }
+
+// Track when a thumbnail is clicked then do something
+// In WeatherBox, track state to know which date to display
+// default to first day, but be able to change
+// change state in wheather feature based on what happens in weather
+// thumbnail so need parent to hold that state
 
 //onChange handler set state
 //need new state to hold active weather info / active index
