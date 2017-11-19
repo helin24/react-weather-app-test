@@ -41,7 +41,7 @@ class WeatherBox extends React.Component {
     for(var i = 0; i < this.state.data.length; i++) {
       thumbnails.push(<WeatherThumbnail date={this.state.data[i].date} temp={this.state.data[i].temp} key={i}/>)
     }
-    return <div className="weatherThumbnails">{thumbnails}</div>;
+    return <div className="weather-thumbnails">{thumbnails}</div>;
   }
 
   render() {
@@ -60,9 +60,10 @@ class WeatherBox extends React.Component {
 class WeatherFeature extends React.Component {
   render() {
     return (
-      <div className="weatherFeature">
-        <h1>{this.props.date}</h1>
-        <h2>{this.props.temp}°</h2>
+      <div className="weather-feature">
+        <h2>Today </h2>
+        <h2>{this.props.date}</h2>
+        <h1>{this.props.temp}°</h1>
       </div>
     );
   }
@@ -71,7 +72,7 @@ class WeatherFeature extends React.Component {
 class WeatherThumbnail extends React.Component {
   render() {
     return (
-      <div className="weatherThumbnail">
+      <div className="weather-thumbnail">
         <h4>{this.props.date}</h4>
         <h2>{this.props.temp}°</h2>
       </div>
@@ -79,8 +80,7 @@ class WeatherThumbnail extends React.Component {
   }
 }
 
-//onChange handler set state 
+//onChange handler set state
 //need new state to hold active weather info / active index
 //then onChange changes the active weather
 //react rerenders when state changes
-
