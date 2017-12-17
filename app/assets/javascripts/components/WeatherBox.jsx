@@ -20,7 +20,6 @@ const weatherData = {
   ],
 };
 
-
 class WeatherBox extends React.Component {
   // constructor that gets API information
   constructor(props) {
@@ -70,39 +69,6 @@ class WeatherBox extends React.Component {
         <nav>navigation?</nav>
         <WeatherFeature date={data[activeIndex].date} temp={data[activeIndex].temp}/>
         {this.makeThumbnails()}
-      </div>
-    );
-  }
-}
-
-class WeatherFeature extends React.Component {
-  render() {
-    return (
-      <div className="weather-feature">
-        <h2>Today </h2>
-        <h2>{this.props.date}</h2>
-        <h1>{this.props.temp}°</h1>
-      </div>
-    );
-  }
-}
-
-class WeatherThumbnail extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.click = this.click.bind(this);
-  }
-
-  click() {
-    this.props.handleClick(this.props.index);
-  }
-
-  render() {
-    return (
-      <div className="weather-thumbnail" onClick={this.click}>
-        <h4>{this.props.date}</h4>
-        <h2>{this.props.temp}°</h2>
       </div>
     );
   }
