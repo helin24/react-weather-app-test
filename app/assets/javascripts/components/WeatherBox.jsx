@@ -33,9 +33,20 @@ class WeatherBox extends React.Component {
     this.state = {
       data: weatherData.data,
       activeIndex: 0,
+      temperatureUnit: 'F',
     };
 
     this.handleThumbnailClick = this.handleThumbnailClick.bind(this);
+    this.handleConvertF = this.convertFahrenheit.bind(this);
+    this.handleConvertC = this.convertCelsius.bind(this);
+  }
+
+  convertFahrenheit() {
+    this.setState({temperatureUnit: 'F'})
+  }
+
+  convertCelsius() {
+    this.setState({temperatureUnit: 'C'})
   }
 
   handleThumbnailClick(index) {
@@ -61,12 +72,14 @@ class WeatherBox extends React.Component {
   render() {
     const {
       data,
-      activeIndex
+      activeIndex,
+      temperatureUnit,
     } = this.state;
     return (
       <div>
         <h2>Weather</h2>
         <nav>navigation?</nav>
+        <TemperatureUnitConverter tempUnit = {temperatureUnit} convertF = {this.handleConvertF} convertC = {this.handleConvertC} />
         <WeatherFeature date={data[activeIndex].date} temp={data[activeIndex].temp}/>
         {this.makeThumbnails()}
       </div>
