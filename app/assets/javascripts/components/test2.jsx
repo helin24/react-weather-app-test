@@ -118,3 +118,7 @@ class WeatherThumbnail extends React.Component {
 //need new state to hold active weather info / active index
 //then onChange changes the active weather
 //react rerenders when state changes
+
+// Next time?
+// F/C conversion button
+// possible to handle thumbnail onClick directly in parent?
