@@ -25,10 +25,9 @@ class WeatherBox extends React.Component {
   constructor(props) {
     super(props);
 
-    // make API call
-    // .onReturn(apiReturn => {
-      // this.state.data = apiReturn.data
-    // })
+    fetch('http://api.wunderground.com/api/<key>/forecast/q/OR/Portland.json')
+      .then(response => response.json())
+      .then(json => console.log(json));
 
     this.state = {
       data: weatherData.data,
