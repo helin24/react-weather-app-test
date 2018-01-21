@@ -49,19 +49,29 @@ class WeatherBox extends React.Component {
     this.setState({temperatureUnit: 'C'})
   }
 
+  convertTemperatureUnit(tempInF) {
+    if (this.state.temperatureUnit == 'C') {
+      return Math.round((tempInF - 32) * 5 / 9)
+    }
+    return tempInF;
+  }
+
   handleThumbnailClick(index) {
     this.setState({activeIndex: index})
   }
 
   makeThumbnails() {
+    const {
+      data
+    } = this.state
     var thumbnails = [];
     for(var i = 0; i < this.state.data.length; i++) {
       thumbnails.push(
         <WeatherThumbnail
           index={i}
           handleClick={this.handleThumbnailClick}
-          date={this.state.data[i].date}
-          temp={this.state.data[i].temp}
+          date={data[i].date}
+          temp={this.convertTemperatureUnit(data[i].temp)}
           key={i}
         />
       )
@@ -80,7 +90,7 @@ class WeatherBox extends React.Component {
         <h2>Weather</h2>
         <nav>navigation?</nav>
         <TemperatureUnitConverter tempUnit = {temperatureUnit} convertF = {this.handleConvertF} convertC = {this.handleConvertC} />
-        <WeatherFeature date={data[activeIndex].date} temp={data[activeIndex].temp}/>
+        <WeatherFeature date={data[activeIndex].date} temp={this.convertTemperatureUnit(data[activeIndex].temp)}/>
         {this.makeThumbnails()}
       </div>
     );
