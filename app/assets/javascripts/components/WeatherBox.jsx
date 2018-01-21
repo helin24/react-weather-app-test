@@ -25,7 +25,7 @@ class WeatherBox extends React.Component {
   constructor(props) {
     super(props);
 
-    fetch('http://api.wunderground.com/api/<key>/forecast/q/OR/Portland.json')
+    fetch(`http://api.wunderground.com/api/${props.weather_key}/forecast/q/OR/Portland.json`)
       .then(response => response.json())
       .then(json => console.log(json));
 
