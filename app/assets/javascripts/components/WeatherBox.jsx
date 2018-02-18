@@ -25,8 +25,10 @@ class WeatherBox extends React.Component {
     const data = json.forecast.simpleforecast.forecastday;
     const parsedData = [];
     for (let i = 0; i < data.length; i++) {
+      const unformattedDate = data[i].date.epoch * 1000;
+      const formattedDate = (new Date(unformattedDate)).toDateString();
       const dataObject = {
-        date: data[i].date.pretty,
+        date: formattedDate,
         temp: data[i].high.fahrenheit,
       }
       parsedData.push(dataObject);
