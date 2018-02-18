@@ -1,25 +1,3 @@
-const weatherData = {
-  location: "Portland",
-  data: [
-    {
-      date: "11/04/2017",
-      temp: 53,
-    },
-    {
-      date: "11/05/2017",
-      temp: 54,
-    },
-    {
-      date: "11/06/2017",
-      temp: 55,
-    },
-    {
-      date: "11/07/2017",
-      temp: 56,
-    },
-  ],
-};
-
 class WeatherBox extends React.Component {
   // constructor that gets API information
   constructor(props) {
@@ -27,10 +5,13 @@ class WeatherBox extends React.Component {
 
     fetch(`http://api.wunderground.com/api/${props.weather_key}/forecast/q/OR/Portland.json`)
       .then(response => response.json())
-      .then(json => console.log(json));
+      .then(json => {
+        const parsedApiResponse = this.parseApiResponse(json);
+        this.setState({data: parsedApiResponse})
+      })
 
     this.state = {
-      data: weatherData.data,
+      data: [],
       activeIndex: 0,
       temperatureUnit: 'F',
     };
@@ -38,6 +19,19 @@ class WeatherBox extends React.Component {
     this.handleThumbnailClick = this.handleThumbnailClick.bind(this);
     this.handleConvertF = this.convertFahrenheit.bind(this);
     this.handleConvertC = this.convertCelsius.bind(this);
+  }
+
+  parseApiResponse(json) {
+    const data = json.forecast.simpleforecast.forecastday;
+    const parsedData = [];
+    for (let i = 0; i < data.length; i++) {
+      const dataObject = {
+        date: data[i].date.pretty,
+        temp: data[i].high.fahrenheit,
+      }
+      parsedData.push(dataObject);
+    }
+    return parsedData;
   }
 
   convertFahrenheit() {
@@ -89,7 +83,9 @@ class WeatherBox extends React.Component {
         <h2>Weather</h2>
         <nav>navigation?</nav>
         <TemperatureUnitConverter tempUnit = {temperatureUnit} convertF = {this.handleConvertF} convertC = {this.handleConvertC} />
-        <WeatherFeature date={data[activeIndex].date} temp={this.convertTemperatureUnit(data[activeIndex].temp)}/>
+        {data.length &&
+          <WeatherFeature date={data[activeIndex].date} temp={this.convertTemperatureUnit(data[activeIndex].temp)}/>
+        }
         {this.makeThumbnails()}
       </div>
     );
