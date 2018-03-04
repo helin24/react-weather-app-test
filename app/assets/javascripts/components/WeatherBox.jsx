@@ -3,16 +3,12 @@ class WeatherBox extends React.Component {
   constructor(props) {
     super(props);
 
-    fetch(`http://api.wunderground.com/api/${props.weather_key}/forecast/q/OR/Portland.json`)
-      .then(response => response.json())
-      .then(json => {
-        const parsedApiResponse = this.parseApiResponse(json);
-        this.setState({data: parsedApiResponse})
-      })
+    this.fetchWeather();
 
     this.state = {
-      data: [],
       activeIndex: 0,
+      data: [],
+      location: "Portland, OR",
       temperatureUnit: 'F',
     };
 
@@ -45,11 +41,22 @@ class WeatherBox extends React.Component {
     this.setState({temperatureUnit: 'C'})
   }
 
+  fetchWeather(city = "Portland", state = "OR") {
+    fetch(`http://api.wunderground.com/api/${this.props.weather_key}/forecast/q/${state}/${city}.json`)
+      .then(response => response.json())
+      .then(json => {
+        const parsedApiResponse = this.parseApiResponse(json);
+        this.setState({data: parsedApiResponse, location: `${city}, ${state}`})
+    })
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    console.log("submit");
-    //assume that users enter correct city, state string
-    //split user string on comma space and assign to city and state variables
+    console.log(event.target.location.value);
+    const location = event.target.location.value.split(", ");
+    const city = location[0];
+    const state = location[1];
+    this.fetchWeather(city, state);
   }
 
   convertTemperatureUnit(tempInF) {
@@ -84,17 +91,18 @@ class WeatherBox extends React.Component {
 
   render() {
     const {
-      data,
       activeIndex,
+      data,
+      location,
       temperatureUnit,
     } = this.state;
     return (
       <div>
-        <h2>Weather</h2>
+        <h2>{location} Weather</h2>
         <form onSubmit={this.handleSubmit}>
           <label>
-            Location:
-            <input type="text"></input>
+            Location (eg. Portland, OR):
+            <input type="text" name="location"></input>
           </label>
           <button type="submit">Submit</button>
         </form>
