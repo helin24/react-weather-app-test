@@ -19,6 +19,7 @@ class WeatherBox extends React.Component {
     this.handleThumbnailClick = this.handleThumbnailClick.bind(this);
     this.handleConvertF = this.convertFahrenheit.bind(this);
     this.handleConvertC = this.convertCelsius.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   parseApiResponse(json) {
@@ -42,6 +43,13 @@ class WeatherBox extends React.Component {
 
   convertCelsius() {
     this.setState({temperatureUnit: 'C'})
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log("submit");
+    //assume that users enter correct city, state string
+    //split user string on comma space and assign to city and state variables
   }
 
   convertTemperatureUnit(tempInF) {
@@ -83,7 +91,13 @@ class WeatherBox extends React.Component {
     return (
       <div>
         <h2>Weather</h2>
-        <nav>navigation?</nav>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Location:
+            <input type="text"></input>
+          </label>
+          <button type="submit">Submit</button>
+        </form>
         <TemperatureUnitConverter tempUnit = {temperatureUnit} convertF = {this.handleConvertF} convertC = {this.handleConvertC} />
         {data.length &&
           <WeatherFeature date={data[activeIndex].date} temp={this.convertTemperatureUnit(data[activeIndex].temp)}/>
